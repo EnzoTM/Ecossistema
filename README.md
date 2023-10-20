@@ -9,3 +9,14 @@ Coisas a fazer:
   *Classes
   <br>
   *Ações de cada classe
+
+<br><br>
+Classes:
+<br>
+*Carnívoro
+<br>
+*Herbívoro
+<br>
+*Algum bicho que come carne e árvore
+<br>
+*Árvore
