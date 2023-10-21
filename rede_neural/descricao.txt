@@ -1,0 +1,8 @@
+Vídeo: https://www.youtube.com/watch?v=pauPCy_s0Ok&ab_channel=TheIndependentCode
+
+Outros 2 vídeos que me ajudaram a entender backpropagation:
+* https://www.youtube.com/watch?v=hfMk-kjRv4c&t=2371s&ab_channel=SebastianLague
+* https://www.youtube.com/watch?v=kbGu60QBx2o&t=1034s&ab_channel=ritvikmath
+
+Google docs com resumo da rede neural:
+https://docs.google.com/document/d/1n2rfbaZ5OkUKKjj1UASKPIdVLZG4WNaYK5Phoh-G9ks/edit?usp=sharing
