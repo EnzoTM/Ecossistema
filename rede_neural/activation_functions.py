@@ -7,6 +7,4 @@ class Tanh(Activation):
 
         derivada = lambda x: 1 - (np.tanh(x) ** 2) #criar função da derivada da tangente hiperbólica
 
-        name = "Tanh"
-
-        super().__init__(tanh, derivada, name)
+        super().__init__(tanh, derivada, "Tanh")

@@ -6,9 +6,9 @@ model = Network([
     Dense(1, activation_function="Tanh")
 ])
 
-#model.architecture()
+model.architecture()
 
 x = [[0, 0], [0, 1], [1, 0], [1, 1]]
 y = [[0], [1], [1], [0]]
 
-model.train(x, y, 0.1, "MSE", 1000)
+#model.train(x, y, 0.1, "MSE", 1000)
