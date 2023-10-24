@@ -2,7 +2,7 @@
 
 Coisas a fazer: 
   <br>
-  *Rede neural (Enzo)
+  *Função de ativação sigmoid e relu (só pra n esquecer, é rápido de fazer)
   <br>
   *Espaço
   <br>
