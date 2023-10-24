@@ -1,11 +1,15 @@
 import numpy as np
 
 class DenseLayer:
-    def __init__(self, input_size, output_size, activation_function) -> None:
+    def __init__(self, input_size, output_size, activation_function, weights = None, bias = None) -> None:
         self.activation_function = activation_function() #pegar a função de ativação
 
-        self.weights = np.random.randn(output_size, input_size) #inicializar randomicamente os pesos
-        self.bias = np.random.randn(output_size, 1) #inicializar randomicamente os bias
+        if weights is None and bias is None:
+            self.weights = np.random.randn(output_size, input_size) #inicializar randomicamente os pesos
+            self.bias = np.random.randn(output_size, 1) #inicializar randomicamente os bias
+        else:
+            self.weights = weights
+            self.bias = bias
 
         self.input_size = input_size #guardar quantos inputs tem (número de neuronios da camada)
         self.output_size = output_size #guardar quantos outputs tem (número de neuronios da próxima camada)
