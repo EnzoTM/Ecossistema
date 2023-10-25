@@ -1,6 +1,6 @@
-from activation_functions import Tanh
-from loss import MSE
-from classes import DenseLayer
+from .activation_functions import Tanh, Sigmoid, ReLU
+from .loss import MSE
+from .classes import DenseLayer
 
 import json
 import numpy as np
@@ -17,7 +17,9 @@ def get_loss_function(loss_function):
 
 def get_activation_function(activation_function):
     functions = {
-        "Tanh": Tanh
+        "Tanh": Tanh,
+        "Sigmoid": Sigmoid,
+        "ReLU": ReLU
     }
 
     if activation_function not in functions.keys():
@@ -54,7 +56,7 @@ class Network:
             self.output_shape = model_strucutre[-1].input_shape #armazenar o shape dos otuputs (sendo utilizado na hora do treinamento)
 
     def predict(self, input):
-        prediction = input
+        prediction = np.reshape(input, self.input_shape)
 
         #"andar" pela rede neural para calcular a predição
         for layer in self.model:

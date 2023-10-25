@@ -20,6 +20,7 @@ class DenseLayer:
         #np.dot(self.weights, self.input) + self.bias calcula o output que deverá ser passado como input para o próximo neuronio
         #depois passamos isso para a função de ativação
         return self.activation_function.forward(np.dot(self.weights, self.input) + self.bias)
+
     
     def backward(self, gradiente, learning_rate):
         #calcular o gradiente da função de ativação
