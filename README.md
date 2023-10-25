@@ -2,10 +2,6 @@
 
 Coisas a fazer: 
   <br>
-  *Função de ativação sigmoid e relu (só pra n esquecer, é rápido de fazer)
-  <br>
-  *Espaço
-  <br>
   *Classes
   <br>
   *Ações de cada classe
