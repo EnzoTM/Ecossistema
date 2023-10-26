@@ -27,6 +27,24 @@ def get_activation_function(activation_function):
     
     return functions[activation_function]
 
+
+def get_shapes(model):
+    """
+    lista que vai armazenar os shapes dos pesos e dos bias (útil para o gene)
+    a lista de shapes será da foram que cada elemento da lista será outra lista e representará uma layer
+    em cada layer vai ter uma lista tal que o elemnto 0 irá se referir aos pesos e o 1 aos bias
+    """
+    shapes = []
+
+    for i in range(0, len(model) - 1):
+        shapes.append([])
+
+        shapes[-1] = [(model[i + 1].number_of_inputs, model[i].number_of_inputs), (model[i + 1].number_of_inputs, 1)]
+
+    shapes.append([(model[-1].number_of_inputs, model[-1].number_of_inputs), (model[-1].number_of_inputs, 1)])
+
+    return shapes
+
 class Dense: #classe para a construção da arquitetura do modelo pelo usuário
     def __init__(self, number_of_inputs, activation_function, input_shape: list = None) -> None:
         self.number_of_inputs = number_of_inputs #guardar o número de inputs
@@ -39,21 +57,32 @@ class Dense: #classe para a construção da arquitetura do modelo pelo usuário
             print("Invalid activation function!")
             return None
         
-class Network:
-    def __init__(self, model_strucutre: int):
-        self.model = []
+class Network: # fake natty
+    def __init__(self):
+        pass
 
-        if model_strucutre != []:
+    def create_model(self, model_strucutre, gene=None):
+        self.model = []
+ 
+        if gene == None: #se nenhum gene for inputado, inicializar o modelo com pesos totalmente randomicos
             #adicionar todas as layers menos a ultima
             for i in range(0, len(model_strucutre) - 1):
                 #a quantidade de  inputs será a quantidade de outputs da ultima camada e a quantidade de output será a quantidade de inputs da próxima camada
                 self.model.append(DenseLayer(model_strucutre[i].number_of_inputs, model_strucutre[i + 1].number_of_inputs, model_strucutre[i].activation_function)) #adicionar a layer
-            
+
             #adicionar a última camda (camda de output). Os números de inputs dela serão os mesmos números de output (que irão passar pela sua função de ativação)
             self.model.append(DenseLayer(model_strucutre[-1].number_of_inputs, model_strucutre[-1].number_of_inputs, model_strucutre[-1].activation_function))
+        else:
+             #adicionar todas as layers menos a ultima
+            for i in range(0, len(model_strucutre) - 1):
+                #a quantidade de  inputs será a quantidade de outputs da ultima camada e a quantidade de output será a quantidade de inputs da próxima camada
+                self.model.append(DenseLayer(model_strucutre[i].number_of_inputs, model_strucutre[i + 1].number_of_inputs, model_strucutre[i].activation_function, weights=gene[i][0], bias=gene[i][1])) #adicionar a layer com os pesos e bias do gene
 
-            self.input_shape = model_strucutre[0].input_shape #armazenar o shape dos inputs (sendo utilizado na hora do treinamento)
-            self.output_shape = model_strucutre[-1].input_shape #armazenar o shape dos otuputs (sendo utilizado na hora do treinamento)
+            #adicionar a última camda (camda de output). Os números de inputs dela serão os mesmos números de output (que irão passar pela sua função de ativação). Fazer a adição com os pesos e bias do gene
+            self.model.append(DenseLayer(model_strucutre[-1].number_of_inputs, model_strucutre[-1].number_of_inputs, model_strucutre[-1].activation_function, weights=gene[-1][0], bias=gene[-1][1]))
+
+        self.input_shape = model_strucutre[0].input_shape #armazenar o shape dos inputs (sendo utilizado na hora do treinamento)
+        self.output_shape = model_strucutre[-1].input_shape #armazenar o shape dos otuputs (sendo utilizado na hora do treinamento)
 
     def predict(self, input):
         prediction = np.reshape(input, self.input_shape)

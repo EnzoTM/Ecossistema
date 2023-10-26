@@ -1,7 +1,7 @@
 from objetos.mapa import Mapa
 from objetos.younglings import Younglings
 
-from rede_neural.rede_neural import Network, Dense
+from rede_neural.rede_neural import Network, Dense, get_shapes
 
 """
 sensores do padawan:
@@ -22,16 +22,21 @@ numero_de_padawans = 5
 
 padawan_rede_neural = [
     Dense(26, input_shape=(26, 1), activation_function="ReLU"), #sensores
-    Dense(52, activation_function="ReLU"),
-    Dense(52, activation_function="ReLU"),
     Dense(5, activation_function="Sigmoid", input_shape=(5, 1))
 ]
 
+padawan_rede_neural_shapes = get_shapes(padawan_rede_neural)
+
 espaco = Mapa(10, 10)   
 
-padawans = []
+padawan = Younglings(padawan_rede_neural, espaco, 5, espaco.posicao_disponivel(4), padawan_rede_neural_shapes)
 
-for i in range(numero_de_padawans):
-    padawans.append(Younglings(Network(padawan_rede_neural), espaco, 5, espaco.posicao_disponivel(4)))
+print(padawan.rede_neural.predict(padawan.sensores))
 
-print(padawans[0].rede_neural.predict(padawans[0].sensores)) 
+"""
+for i in range(len(padawans)):
+    for layer in padawans[i].rede_neural.model:
+        print(f"Weights: {layer.weights}. \nBias: {layer.bias}")
+
+    print()
+    print()"""

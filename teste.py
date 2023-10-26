@@ -1,14 +1,15 @@
-from rede_neural.rede_neural import Dense, Network
+import random
 
-import numpy as np
+def generate_random_list(shape):
+    """
+    Generate a list of lists with random values based on the given shape.
 
-model = Network([
-    Dense(2, activation_function="Tanh", input_shape=(2, 1)),
-    Dense(3, activation_function="Tanh"),
-    Dense(1, activation_function="Tanh", input_shape=(1, 1))
-])
+    :param shape: A tuple (rows, columns) representing the shape of the list to be generated.
+    :return: A list of lists with random values, matching the provided shape.
+    """
+    num_rows, num_cols = shape
+    return [[random.random() for _ in range(num_cols)] for _ in range(num_rows)]
 
-x = [[0, 0], [0, 1], [1, 0], [1, 1]]
-y = [[0], [1], [1], [0]]
-
-print(model.predict(x[0]))
+# Example usage:
+random_list = generate_random_list((3, 2))
+print(random_list)
