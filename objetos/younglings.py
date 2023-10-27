@@ -1,6 +1,6 @@
 import numpy as np
 from rede_neural.rede_neural import Network
-from mapa import Mapa
+from .mapa import Mapa
 
 
 def get_list_given_a_shape(shape):
@@ -55,3 +55,21 @@ class Younglings:
         action = lista.index(max(lista)) #pegar a ação que a rede neural disse que era para fazer
 
         return action
+    
+    def update(self, result_action):
+        """
+        atuailizar os status do padawan baseado na ação que ele tomou
+        toda rodada ele ganha 1 de fome"""
+
+        self.fome += 0.1
+
+        self.fome += result_action
+
+        if self.fome < 0: self.fome = 0
+
+        if self.fome >= 1:
+            self.vivo = False
+
+            return -1 #signifca que morreu
+
+        return 0 #significa que continua vivo

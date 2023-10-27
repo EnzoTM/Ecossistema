@@ -8,8 +8,7 @@ model_architecture_padawans = [
     Dense(26, activation_function="ReLU", input_shape=(26, 1)),
     Dense(52, activation_function="ReLU"),
     Dense(52, activation_function="ReLU"),
-    Dense(5, activation_function="Sigmoid", input_shape=(5, 1))
-
+    Dense(6, activation_function="Sigmoid", input_shape=(6, 1))
 ]
 
 model_shape_padawans = get_shapes(model_architecture_padawans)
@@ -33,4 +32,12 @@ class Simulacao():
     def start_simulation(self, numero_de_geracoes):
         for i in range(numero_de_geracoes):
             for padawan in self.padawans:
-                action = padawan.action()
+                if padawan.vivo:
+                    action = padawan.action()
+
+                    result = self.espaco.make_action(action, padawan.posicao) #fazer a ação e pegar o resultado dela
+
+                    if padawan.update(result) == -1: #se o mano morreu
+                        self.espaco.update_by_death(padawan.posicao)
+
+            self.espaco.atualizar()
