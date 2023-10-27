@@ -12,6 +12,8 @@ class Mapa:
     def __init__(self, x, y, obstaculo_chance = 0.25, terra_chance=0.5, grama_chance=0.25) -> None:
         self.mapa = []
 
+        self.positions_with_grass = []
+
         self.x = x
         self.y = y
 
@@ -21,16 +23,20 @@ class Mapa:
             for _ in range(y):
                 self.mapa[i].append(random.choices([0, 1, 2], weights=[terra_chance, obstaculo_chance, grama_chance])[0])
 
-    def atualizar(self, new_tree_probability):
-        for i in range(0, self.x * self.y):
-            new_tree = random.choices([0, 1], weights=[1 - new_tree_probability, new_tree_probability])[0]
+                if self.mapa[i] == 2: #se for uma grama, adicionar a posição na lista de posições que tem grama
+                    self.positions_with_grass.append([x, y])
 
-            if new_tree:
+    def atualizar(self, new_grass_probability):
+        for i in range(0, self.x * self.y):
+            new_grass = random.choices([0, 1], weights=[1 - new_grass_probability, new_grass_probability])[0]
+
+            if new_grass:
                 x = random.randint(0, 1)
                 y = random.randint(0, 1)
 
                 if self.mapa[x][y] == 0:
                     self.mapa[x][y] = 2
+                    self.positions_with_grass.append([x, y])
 
     def printar_mapa(self):
         for x in range(self.x):
@@ -42,9 +48,9 @@ class Mapa:
     def surroundings(self, posicao, alcance):
         """
         TODO
-        dada uma posição do mapa (x, y)
+        dada uma posição do mapa (y, x)
         retornar uma matriz de todos os blocos do mapa a "alcance" de distancia
-        tem que conter o ponto (x, y)
+        tem que conter o ponto (y, x)
         """
         surroundings = []
 
@@ -76,3 +82,53 @@ class Mapa:
                 self.mapa[x][y] = tipo
 
                 return (x, y)
+    
+    def move_up(self, position):
+        """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
+        #nao pode subir
+        if (position[0] == 0): return -1 #vai perder 1 de vida, por isso retorna -1
+        
+        if (position[0] - 1 != 0) and (position[0] - 1 != 2): return -1
+
+        #se chegou aqui singifca que a ação pode ser feita
+
+        tmp = self.mapa[position[0], position[1]]
+
+        if position in self.positions_with_grass:
+            self.mapa[position[0], position[1]] = 2
+
+            self.positions_with_grass.remove(position)
+        else:
+            self.mapa[position[0], position[1]] = 0
+
+        self.mapa[position[0] - 1, position[1]] = tmp
+
+        return 0
+    
+    def move_down(self, position):
+        """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
+        #nao pode descer
+        if (position[0] == (self.y - 1)): return -1 #vai perder 1 de vida, por isso retorna -1
+        
+        if (position[0] - 1 != 0) and (position[0] - 1 != 2): return -1
+
+        #se chegou aqui singifca que a ação pode ser feita
+
+        tmp = self.mapa[position[0], position[1]]
+
+        if position in self.positions_with_grass:
+            self.mapa[position[0], position[1]] = 2
+
+            self.positions_with_grass.remove(position)
+        else:
+            self.mapa[position[0], position[1]] = 0
+
+        self.mapa[position[0] + 1, position[1]] = tmp
+
+        return 0
+
+    
+    def make_action(self, action, postion):
+        if action == 0: return 0 #nao vai perder nada de vida
+        
+        if action == 1:  return self.move_up(postion)

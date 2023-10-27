@@ -1,7 +1,23 @@
 import numpy as np
 
+class Activation:
+    def __init__(self, function, gradiente, name):
+        self.function = function #armazenar a função em si
+        self.gradiente = gradiente #armazenar o gradiente da função
+        self.name = name
+
+    def forward(self, input):
+        self.input = input #armazenar o input, pois o utilizare-mos no backpropagation 
+
+        #retornar o valor do resultado da função de ativação
+        return self.function(self.input)
+    
+    def backward(self, gradiente):
+        #retornar o gradiente da função de ativação
+        return np.multiply(gradiente, self.gradiente(self.input))
+
 class DenseLayer:
-    def __init__(self, input_size, output_size, activation_function, weights = None, bias = None) -> None:
+    def __init__(self, input_size: int, output_size: int, activation_function: Activation, weights: np.array = None, bias: np.array = None):
         self.activation_function = activation_function() #pegar a função de ativação
 
         if weights is None and bias is None:
@@ -35,19 +51,3 @@ class DenseLayer:
 
         #retornar o gradiente do input, que servirá como o gradiente de entrada para a função de ativação do neuronio anterior
         return inputs_gradiente
-    
-class Activation:
-    def __init__(self, function, gradiente, name):
-        self.function = function #armazenar a função em si
-        self.gradiente = gradiente #armazenar o gradiente da função
-        self.name = name
-
-    def forward(self, input):
-        self.input = input #armazenar o input, pois o utilizare-mos no backpropagation 
-
-        #retornar o valor do resultado da função de ativação
-        return self.function(self.input)
-    
-    def backward(self, gradiente):
-        #retornar o gradiente da função de ativação
-        return np.multiply(gradiente, self.gradiente(self.input))

@@ -1,6 +1,6 @@
 from .activation_functions import Tanh, Sigmoid, ReLU
 from .loss import MSE
-from .classes import DenseLayer
+from .classes import DenseLayer, Activation
 
 import json
 import numpy as np
@@ -46,7 +46,7 @@ def get_shapes(model):
     return shapes
 
 class Dense: #classe para a construção da arquitetura do modelo pelo usuário
-    def __init__(self, number_of_inputs, activation_function, input_shape: list = None) -> None:
+    def __init__(self, number_of_inputs: int, activation_function: Activation, input_shape: list = None):
         self.number_of_inputs = number_of_inputs #guardar o número de inputs
         self.activation_function = get_activation_function(activation_function) #pegar a função de ativação (função em si, ainda tem que "ativa-la")
 
@@ -61,7 +61,7 @@ class Network: # fake natty
     def __init__(self):
         pass
 
-    def create_model(self, model_strucutre, gene=None):
+    def create_model(self, model_strucutre: list, gene=None):
         self.model = []
  
         if gene == None: #se nenhum gene for inputado, inicializar o modelo com pesos totalmente randomicos

@@ -1,27 +1,13 @@
-"""
-padawan_rede_neural = [
-    Dense(26, input_shape=(26, 1), activation_function="ReLU"), #sensores Weights shape: (52, 26). Bias shape: (52, 1)
-    Dense(52, activation_function="ReLU"), Weights shape: (52, 52). Bias shape: (52, 1)
-    Dense(52, activation_function="ReLU"), Weights shape: (5, 52). Bias shape: (5, 1)
-    Dense(5, activation_function="Sigmoid", input_shape=(5, 1)) Weights shape: (5, 5). Bias shape: (5, 1)
-]
-"""
 import numpy as np
 from rede_neural.rede_neural import Network
+from mapa import Mapa
 
-import random
 
 def get_list_given_a_shape(shape):
-    #print(f"Shape: {shape}")
-    teste = np.random.randn(shape[0], shape[1])
-    #teste = [[random.random() for _ in range(shape[1])] for _ in range(shape[0])]
-
-    #return np.reshape(teste, shape)
-
-    return teste
+    return np.random.randn(shape[0], shape[1])
 
 def create_gene(model_architecture, shapes):
-    """W
+    """
     o gene terá meio que a mesma arquitetura que a lista de shapes da rede neural (funcao get_shapes() da rede neural)
     """
     genes = []
@@ -33,21 +19,26 @@ def create_gene(model_architecture, shapes):
     return genes
 
 class Younglings:
-    def __init__(self, model_architecture, espaco, alcance, posicao: list, shapes, fome = 0, vida = 100):
-        self.gene = create_gene(model_architecture, shapes)
-                
+    def __init__(self, model_architecture: list, espaco: Mapa, alcance: int, posicao: list, shapes: list, fome: int = 0, vida: int = 1, gene: list = None):
+        #criar o gene se ele nao foi fornecido
+        if gene == None:
+            self.gene = create_gene(model_architecture, shapes)
+        else:
+            self.gene = gene
+        
+        #criação da rede neural
         self.rede_neural = Network()
         self.rede_neural.create_model(model_architecture, gene=self.gene)
         
-        
+        #criação dos parametos
         self.fome = fome
         self.vivo = True
         self.vida = vida
         self.alcance = alcance #alcance de visão
         self.posicao = posicao
-
         self.surroundings = espaco.surroundings(posicao, alcance) 
 
+        #adicionar as informações pertinentes aos sensores  
         self.sensores = []
         self.sensores.append(self.fome)
 
@@ -56,8 +47,11 @@ class Younglings:
                 self.sensores.append(self.surroundings[i][j])
 
     def action(self):
-        lista = self.rede_neural.predict(self.sensores).tolist()
+        """
+        pega qual ação deve ser feita
+        """
+        lista = self.rede_neural.predict(self.sensores).tolist() #pegar a predicao da rede neural
 
-        action = lista.index(max(lista))
+        action = lista.index(max(lista)) #pegar a ação que a rede neural disse que era para fazer
 
-        print(action)
+        return action
