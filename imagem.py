@@ -1,4 +1,3 @@
-from sdl2 import SDL_Rect, SDL_SetRenderDrawColor, SDL_RenderFillRect
 import pygame  
 from objetos.mapa import Mapa
 from objetos.younglings import Younglings
@@ -90,3 +89,5 @@ pygame.quit()
 # --> 2: Não sei por que algumas pressas estão sendo geradas nas bordas dos obstáculos -> mudar isso
 # --> 3: PRECISA ATUALIZAR CORRETAMENTE AS POSICOES DO PADAWAN - LINHA 46
 # --> 4: NÃO TO CONSEGUINDO IMPORTAR ALCANCES  -- linha 6
+# --> 5: Pensarei primeiro em funcionabilidade e depois em simplicidade para passar pro mojo. Posso tentar ver depois novas bibliotecas gráficas
+# --> 6: Não irei usar SDL por motivos de não sei se tem no mojo e tá mt chato
