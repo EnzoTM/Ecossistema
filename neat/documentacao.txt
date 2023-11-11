@@ -62,3 +62,9 @@ Rede Neural:
     print(model2.predict([1, 2]))
 
 isso dai é um código em python que mostra as duas formas que se tem de cirar a rede neural
+
+gene = [
+    [[[0, 0], [2, 0.3]], [[1, 0], [2, 0.2]]],
+    [[[2, 0], [3, 2]]],
+    [[[3, 0]]]
+]
