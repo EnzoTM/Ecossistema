@@ -65,7 +65,7 @@ class NeuralNetwork:
                 
                 print()
 
-            print(end="\n\n")    
+            print(end="\n")    
 
     def search_neuron(self, id: int):
         for layer in range(len(self.layers)): #for each layer
