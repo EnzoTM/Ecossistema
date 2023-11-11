@@ -89,3 +89,4 @@ pygame.quit()
 # --> 1: Não sei o que é essa matriz que é gerada então talvez esteja dando problema
 # --> 2: Não sei por que algumas pressas estão sendo geradas nas bordas dos obstáculos -> mudar isso
 # --> 3: PRECISA ATUALIZAR CORRETAMENTE AS POSICOES DO PADAWAN - LINHA 46
+# --> 4: NÃO TO CONSEGUINDO IMPORTAR ALCANCES  -- linha 6
