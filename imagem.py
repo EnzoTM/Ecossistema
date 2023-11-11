@@ -1,92 +1,70 @@
-import sdl2
-import sdl2.ext
 from sdl2 import SDL_Rect, SDL_SetRenderDrawColor, SDL_RenderFillRect
+import pygame  
+from objetos.mapa import Mapa
+from objetos.younglings import Younglings
+from simulacao import Simulacao
+from ag import numero_de_padawans, genes, x_mapa, y_mapa, simulacao # NÃO TO CONSEGUINDO IMPORTAR ALCANCES
 
-# PROTÓTIPO --- NÃO TÁ CONECTADO NO CÓDIGO AINDA
-
-def draw_circle(renderer, center_x, center_y, radius, color):
-    x = radius
-    y = 0
-    p = 1 - radius
-
-    def draw_symmetric_points(cx, cy, x, y):
-        points = [
-            (cx + x, cy + y),
-            (cx - x, cy + y),
-            (cx + x, cy - y),
-            (cx - x, cy - y),
-            (cx + y, cy + x),
-            (cx - y, cy + x),
-            (cx + y, cy - x),
-            (cx - y, cy - x)
-        ]
-        for point in points:
-            renderer.draw_point(point, color)
-
-    while x >= y:
-        draw_symmetric_points(center_x, center_y, x, y)
-        y += 1
-        if p <= 0:
-            p += 2 * y + 1
-        else:
-            x -= 1
-            p += 2 * (y - x) + 1
-        draw_symmetric_points(center_x, center_y, x, y)
+# Inicializar Pygame
+pygame.init()
 
 
-def run_simulation():
-    # Inicializa a SDL2
-    sdl2.ext.init()
+# Configurações da tela
+screen_width = 1900
+screen_height = 1000
+screen = pygame.display.set_mode((screen_width, screen_height))
 
-    # Cria uma janela
-    window = sdl2.ext.Window("Ecossistema", size=(1900, 1000))
-    window.show()
+# Cores
+BLACK = (0, 0, 0) # Teoricamente é pra ser a área livre mas não sei se tá sendo
+RED = (255, 0, 0)   # Predador
+GREEN = (0, 255, 0) # Presa
+BLUE = (0, 0, 255)  # Obstáculo
 
-    # Cria um renderizador para desenhar na janela
-    renderer = sdl2.ext.Renderer(window)
+# Inicializa o mapa e a simulação
 
-    # Definindo cores
-    BLACK = sdl2.ext.Color(0, 0, 0)
-    RED = sdl2.ext.Color(255, 0, 0)   # Predador
-    GREEN = sdl2.ext.Color(0, 255, 0) # Presa
-    BLUE = sdl2.ext.Color(0, 0, 255)  # Obstáculo
-    WHITE = sdl2.ext.Color(255, 255, 255) # Área Livre
+mapa = Mapa(x_mapa, y_mapa)
+simulacao = Simulacao()
+padawans_alcance = [5] * numero_de_padawans # NÃO TO CONSEGUINDO IMPORTAR ALCANCES GRRRRRRRRRRRRRRR - VOU TE PEGAR ENZO
+simulacao.start_population(x_mapa, y_mapa, numero_de_padawans, padawans_alcance, genes)
+simulacao.start_simulation(5) # 5 gerações
 
-    running = True
-    while running:
-        # Processa eventos
-        events = sdl2.ext.get_events()
-        for event in events:
-            if event.type == sdl2.SDL_QUIT:
-                running = False
+# Loop principal
+running = True
+while running:
+    # Processa eventos
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-        # Clear the screen
-        renderer.clear(BLACK)
+    # Limpar tela
+    screen.fill(BLACK)
 
-        # Desenha os elementos
-        # Predador - um círculo vermelho
-        draw_circle(renderer, 400, 300, 30, RED)
+    # Renderiza o mapa e obstáculos
+    escala_x = screen_width / x_mapa
+    escala_y = screen_height / y_mapa
+    for y in range(y_mapa):
+        for x in range(x_mapa):
+            tipo_terreno = mapa.mapa[y][x]
+            if tipo_terreno == 1:  # Exemplo: 1 representa um obstáculo
+                pygame.draw.rect(screen, BLUE, (x * escala_x, y * escala_y, escala_x, escala_y)) # Obstáculo em azul
 
-        # Presa - um quadrado verde
-        SDL_SetRenderDrawColor(renderer.sdlrenderer, GREEN.r, GREEN.g, GREEN.b, GREEN.a)
-        green_rect = SDL_Rect(200, 150, 50, 50)
-        SDL_RenderFillRect(renderer.sdlrenderer, green_rect)
+    # Renderiza as presas
+    for presa in simulacao.padawans:
+        x, y = presa.posicao
+        pygame.draw.circle(screen, GREEN, (int(x * escala_x), int(y * escala_y)), 5)
 
-        # Obstáculo - um quadrado azul
-        SDL_SetRenderDrawColor(renderer.sdlrenderer, BLUE.r, BLUE.g, BLUE.b, BLUE.a)
-        blue_rect = SDL_Rect(600, 450, 50, 50)
-        SDL_RenderFillRect(renderer.sdlrenderer, blue_rect)
 
-        # Área Livre - um quadrado branco
-        SDL_SetRenderDrawColor(renderer.sdlrenderer, WHITE.r, WHITE.g, WHITE.b, WHITE.a)
-        white_rect = SDL_Rect(100, 450, 50, 50)
-        SDL_RenderFillRect(renderer.sdlrenderer, white_rect)
+    # COLOCAR A ATUALIZAÇÃO DO MOVIMENTO DOS BIXOS AQUI
 
-        # Atualiza a janela
-        renderer.present()
+    pygame.display.flip()
+    pygame.time.delay(16)  # 16 milissegundis
 
-    # Limpa recursos antes de sair
-    sdl2.ext.quit()
 
-if __name__ == "__main__":
-    run_simulation()
+pygame.quit()
+
+
+
+# QUESTÕES A SE PENSAR:
+# --> 1: Não sei o que é essa matriz que é gerada então talvez esteja dando problema
+# --> 2: Não sei por que algumas pressas estão sendo geradas nas bordas dos obstáculos -> mudar isso
+# --> 3: 
