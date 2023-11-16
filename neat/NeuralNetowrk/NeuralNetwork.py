@@ -119,6 +119,24 @@ class NeuralNetwork:
 
         return output #return the results
     
+    def GetGene(self):
+        gene = []
+
+        for layer in range(len(self.layers)): #for each layer on the neural network
+            gene.append([]) #create the layer
+
+            for i in range(len(self.layers[layer])): #for each neuron on that layer
+                gene[layer].append([]) #create the neuron
+
+                neuron = self.layers[layer][i] 
+
+                gene[layer][i].append([neuron.id, neuron.bias]) #append the information about the neuron
+
+                for link in neuron.links: #for each link that this neuron has
+                    gene[layer][i].append([link.neuron.id, link.weight])
+        
+        return gene
+    
     def CreateNetwrok(self, gene: list):
         #for each layer of the gene
         for i in range(len(gene)):
