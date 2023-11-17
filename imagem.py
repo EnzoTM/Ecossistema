@@ -1,5 +1,5 @@
 import pygame  
-from objetos.mapa import Mapa
+from neat.mapa.mapa import Mapa
 
 class Imagem():
     def __init__(self, x_mapa: int, y_mapa: int, mapa: list):
