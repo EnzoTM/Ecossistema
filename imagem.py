@@ -38,10 +38,10 @@ class Imagem():
 
 
             # Renderiza o mapa e obstáculos
-            escala_x = screen_width / self.x_mapa
-            escala_y = screen_height / self.y_mapa
-            for y in range(self.y_mapa):
-                for x in range(self.x_mapa):
+            escala_x = screen_width / self.x
+            escala_y = screen_height / self.y
+            for y in range(self.y):
+                for x in range(self.x):
                     tipo_terreno = self.mapa[y][x]
                     if tipo_terreno == 1:  # Exemplo: 1 representa um obstáculo
                         pygame.draw.rect(screen, BLUE, (x * escala_x, y * escala_y, escala_x, escala_y)) # Obstáculo em azul
@@ -64,5 +64,8 @@ class Imagem():
 # Presa = 4
 
 mapa = Mapa(4, 4)
+imagem = Imagem(4,4, mapa.mapa)
+
 mapa.printar_mapa()
-# Imagem(4,4, mapa.mapa)
+
+imagem.imagem()
