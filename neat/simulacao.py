@@ -1,15 +1,17 @@
 from ag.ag import AG
 from individuos.individuo import CriarIndividuo
-
+from mapa.mapa import Mapa
 import math
 
 ag = AG()
 
-def StartPopulation(numero_de_individuos: int, gene: list):
+def StartPopulation(self, numero_de_individuos: int, gene: list):
     individuos = []
 
+    posicao = self.mapa.posicao_disponivel(3)
+
     for _ in range(numero_de_individuos):
-            individuos.append(CriarIndividuo(gene=gene))
+            individuos.append(CriarIndividuo(gene=gene, posicao=posicao))
 
     return individuos
 
@@ -43,11 +45,9 @@ class Simulacao():
 
     def Simulate(self):
         for individuo in self.individuos:
-            for passo in range(self.numero_de_passos):
-                if not(individuo.objetivo_concluido):
-                    individuo.numero_de_passos += 1 #aumentar o número de passos em 1
-
-                    inputs = individuo.mapa.inputs(individuo.posicao) #pegar os inputs para esse individuo
+            for _ in range(self.numero_de_acoes):
+                if (individuo.vivo):
+                    inputs = self.mapa.inputs(individuo.posicao) #pegar os inputs para esse individuo
 
                     predicao = individuo.network.predict(inputs) #fazer a predicao
 
@@ -55,17 +55,19 @@ class Simulacao():
                     acao = predicao.index(max(predicao)) + 1 #mais 1 só pra eu n ter q mexer no codigo do mapa
 
                     #fazer a ação e pegar a nova posição do indivíduo após a ação
-                    nova_posicao = individuo.mapa.make_action(acao, individuo.posicao)
+                    nova_posicao = self.mapa.make_action(acao, individuo.posicao)
                     individuo.posicao = nova_posicao    
 
-                    #se o indivíduo chegou no objetivo
-                    if individuo.posicao == individuo.posicao_objetivo:
-                        individuo.objetivo_concluido = True
+                    #se o indivíduo morreu
+                    if individuo.fome == 1:
+                        individuo.vivo = False
 
-    def StartSimulation(self, numero_de_geracoes: int, numero_de_individuos: int, numero_de_passos: int, gene_individuo: list):
+    def StartSimulation(self, numero_de_geracoes: int, numero_de_individuos: int, numero_de_acoes: int, gene_individuo: list):
         self.numero_de_geracoes = numero_de_geracoes
         self.numero_de_indivudos = numero_de_individuos
-        self.numero_de_passos = numero_de_passos
+        self.numero_de_acoes = numero_de_acoes
+
+        self.mapa = Mapa(50, 50, obstaculo_chance=0, terra_chance=0.75, grama_chance=0.25)
 
         self.individuos = StartPopulation(numero_de_individuos, gene=gene_individuo)
 
@@ -80,7 +82,7 @@ class Simulacao():
     
     def Results(self):
         for individuo in self.fitness:
-            print(f"{individuo.objetivo_concluido}, {individuo.numero_de_passos}, {math.sqrt((individuo.posicao[0] - individuo.posicao_objetivo[0])**2 + (individuo.posicao[1] - individuo.posicao_objetivo[1])**2)}")
+            print(f"{individuo.objetivo_concluido}, {individuo.numero_de_acoes}, {math.sqrt((individuo.posicao[0] - individuo.posicao_objetivo[0])**2 + (individuo.posicao[1] - individuo.posicao_objetivo[1])**2)}")
 """
 será passado quatro inputs:
 se tem o objetivo em cima

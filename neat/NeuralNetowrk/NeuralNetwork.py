@@ -83,7 +83,7 @@ class NeuralNetwork:
             return None
 
         #logic for the input layer
-        for i in range(len(self.layers[0])): #for every neuron the the input layer
+        for i in range(len(self.layers[0])): #for every neuron on the input layer
             self.layers[0][i].value = inputs[i] + self.layers[0][i].bias #set the value of the neruon based on the input and it's bias
 
             neuron = self.layers[0][i] #get the neuron

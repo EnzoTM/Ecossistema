@@ -92,7 +92,7 @@ class Mapa:
     def move_up(self, position):
         """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
         #nao pode subir 
-        if (position[0] == 0): return position #vai perder 1 de vida, por isso retorna -1
+        if (position[0] == 0): return position, 0.1 #vai ganhar 0.1 de fome, por isso retorna
         
         #if (position[0] - 1 != 0) and (position[0] - 1 != 2): return position
 
