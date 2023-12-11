@@ -1,14 +1,17 @@
 from NeuralNetowrk.NeuralNetwork import NeuralNetwork
-from mapa.mapa import Mapa
 
-def CriarIndividuo(gene, posicao):
-        return Individuo(NeuralNetwork(), posicao=posicao, gene=gene) #criar o individuo
+def CriarIndividuo(gene, posicao, tipo):
+        return Individuo(NeuralNetwork(), posicao=posicao, gene=gene, tipo=tipo) #criar o individuo
 
 class Individuo:
-    def __init__(self, network: NeuralNetwork, posicao: list, gene: list) -> None:
+    def __init__(self, network: NeuralNetwork, posicao: list, gene: list, tipo: int) -> None:
         self.network = network
         self.network.CreateNetwrok(gene=gene)
 
         self.posicao = posicao
-        self.vivo = True
+        self.vida = 1
         self.fome = 0
+
+        self.gene = self.network.GetGene()
+
+        self.tipo = tipo

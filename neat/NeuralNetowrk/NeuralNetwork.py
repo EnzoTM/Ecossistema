@@ -138,6 +138,8 @@ class NeuralNetwork:
         return gene
     
     def CreateNetwrok(self, gene: list):
+        self.network_id = []
+
         #for each layer of the gene
         for i in range(len(gene)):
             layer = gene[i]
@@ -155,10 +157,14 @@ class NeuralNetwork:
 
         #for each layer
         for i in range(len(gene)):
-            for j in range(len(gene[i])): #for each neuron                
+            self.network_id.append([]) #adicionar a lista referente aquela layer
+
+            for j in range(len(gene[i])): #for each neuron     
                 neuron = self.layers[i][j] #get the neuron
 
                 neuron_informations = gene[i][j]
+
+                self.network_id[i].append(len(neuron_informations) - 1) #minus 1, cause we just want to know how many links this neuron has
 
                 for k in range(1, len(neuron_informations)): #for all it's links
                     link = Link(self.search_neuron(neuron_informations[k][0]), weight=neuron_informations[k][1])

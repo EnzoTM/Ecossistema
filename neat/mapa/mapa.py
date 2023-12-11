@@ -1,4 +1,7 @@
 import random
+import math
+
+from individuos.individuo import Individuo
 
 """
 1: obstaculo
@@ -12,41 +15,56 @@ import random
 o ponto será da forma (y, x)
 """
 
+def calcula_distancia(p1, p2):
+    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
+def calcula_input(valor: int, distancia: float):
+        if (valor == 2): #é uma grama
+            return 1 / distancia
+        
+        if (valor == 3): #aliado
+            return -1 / distancia
+
 class Mapa:
     def __init__(self, x, y, obstaculo_chance = 0.25, terra_chance=0.5, grama_chance=0.25) -> None:
-        self.mapa = []
+        self.mapa: list[list] = []
 
-        self.positions_with_grass = []
+        self.positions_withgrass:list = []
 
-        self.x = x
-        self.y = y
+        self.x: int  = x
+        self.y: int = y
 
         for i in range(y):
-            self.mapa.append([])
+            self.mapa.append([-1])
 
-            for _ in range(x):
+            if i == 0 or i == y-1:
+                for k in range(x):
+                    self.mapa[i].append(-1)
+
+            for _ in range(1, x-1):
                 self.mapa[i].append(random.choices([0, 1, 2], weights=[terra_chance, obstaculo_chance, grama_chance])[0])
 
                 if self.mapa[i] == 2: #se for uma grama, adicionar a posição na lista de posições que tem grama
                     self.positions_with_grass.append([y, x])
 
-    def atualizar(self, new_grass_probability = 0.1):
-        for i in range(0, self.x * self.y):
-            new_grass = random.choices([0, 1], weights=[1 - new_grass_probability, new_grass_probability])[0]
+            self.mapa[i].append(-1)
 
-            if new_grass:
-                x = random.randint(0, 1)
-                y = random.randint(0, 1)
+    def atualizar(self, individuos: list[Individuo]):
+         #atualizar o mapa
+        for individuo in individuos:
+            posicao = individuo.posicao #na posicao de cada indivíduo
+            
+            #ou colocar uma terra ou uma grama no local de onde estava o indivíduo
+            self.mapa[posicao[0]][posicao[1]] = random.choices([0, 2], weights=[0.75, 0.25])[0]
 
-                if self.mapa[y][x] == 0:
-                    self.mapa[y][x] = 2
-                    self.positions_with_grass.append([y, x])
-
-    def printar_mapa(self):
+    def printar_mapa(self)->None:   
         for y in range(self.y):
             for x in range(self.x):
-                print(self.mapa[y][x], end=" ")
-            
+                if self.mapa[y][x] < 0 and (y == 0 or y == self.y-1):
+                    print(self.mapa[y][x], end="")
+                else:
+                    print(self.mapa[y][x], end=" ")
+
             print()
 
     def surroundings(self, posicao, alcance):
@@ -89,109 +107,38 @@ class Mapa:
 
                 return (y, x)
     
-    def move_up(self, position):
-        """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
-        #nao pode subir 
-        if (position[0] == 0): return position, 0.1 #vai ganhar 0.1 de fome, por isso retorna
-        
-        #if (position[0] - 1 != 0) and (position[0] - 1 != 2): return position
+    def move(self, posicao_atual:tuple ,anda_y:int, anda_x:int):
+
+        conteudo_novo_local = self.mapa[posicao_atual[0] + anda_y][posicao_atual[1] + anda_x]
+
+        if  (conteudo_novo_local != 0) and (conteudo_novo_local != 2): #posicao atual somada a somas na posicao y e x é -1 (borda)
+            return posicao_atual , 0.1 #nao anda e ganha fome
 
         #se chegou aqui singifca que a ação pode ser feita
 
-        tmp = self.mapa[position[0]][position[1]]
+        indv:int  = self.mapa[posicao_atual[0]][posicao_atual[1]] #pega o tipo de indv que estava na loca
 
-        if position in self.positions_with_grass:
-            self.mapa[position[0]][position[1]] = 2
-        else:
-            self.mapa[position[0]][position[1]] = 0
+        self.mapa[posicao_atual[0]][posicao_atual[1]] = 0 #local atual fica disponivel
 
-        self.mapa[position[0] - 1][position[1]] = tmp
+        self.mapa[posicao_atual[0] + anda_y][posicao_atual[1] + anda_x] = indv
 
-        return (position[0] - 1, position[1])
-    
-    def move_down(self, position):
-        """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
-        #nao pode descer
-        if (position[0] == (self.y - 1)): return position #vai perder 1 de vida, por isso retorna -1
-        
-        #if (position[0] - 1 != 0) and (position[0] - 1 != 2): return position
+        if ( ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) in self.positions_withgrass  ): # se ele for para grama, come a grama e perde fome
+            self.positions_withgrass.remove(((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)))  #remove posicao da lista de gramas
 
-        #se chegou aqui singifca que a ação pode ser feita
-
-        tmp = self.mapa[position[0]][position[1]]
-
-        if position in self.positions_with_grass:
-            self.mapa[position[0]][position[1]] = 2
-        else:
-            self.mapa[position[0]][position[1]] = 0
-
-        self.mapa[position[0] + 1][position[1]] = tmp
-
-        return (position[0] + 1, position[1])
-    
-    def move_right(self, position):
-        """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
-        if (position[1] == (self.x - 1)): return position
-
-        #if ((position[1] + 1) != 0) and ((position[1] + 1) != 2): return position
-
-        #se chegou aqui singifca que a ação pode ser feita
-
-        tmp = self.mapa[position[0]][position[1]]
-
-        if position in self.positions_with_grass:
-            self.mapa[position[0]][position[1]] = 2
-        else:
-            self.mapa[position[0]][position[1]] = 0
-
-        self.mapa[position[0]][position[1] + 1] = tmp
-
-        return (position[0], position[1] + 1)
-    
-    def move_left(self, position):
-        """nao precisa ser uma função da classe, mas usa variaveis dela ent coloquei aqui para simplificar"""
-        if (position[1] == 0): return position
-
-        #if ((position[1] - 1) != 0) and ((position[1] - 1) != 2): return position
-
-        #se chegou aqui singifca que a ação pode ser feita
-
-        tmp = self.mapa[position[0]][position[1]]
-
-        if position in self.positions_with_grass:
-            self.mapa[position[0]][position[1]] = 2
-        else:
-            self.mapa[position[0]][position[1]] = 0
-
-        self.mapa[position[0]][position[1] - 1] = tmp
-
-        return (position[0], position[1] - 1)
-    
-    def eat(self, position):
-        if position not in self.positions_with_grass: return 0 #ta tentando comer em um local que não pode
-
-        self.positions_with_grass.remove(position)
-
-        return 10    #ganha 5 de vida
+            return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) , -0.3
+ 
+        return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) , 0.0
     
     def make_action(self, action, postion):
-        if action == 0: return postion #nao vai perder nada de vida
+        if action == 0: return postion, 0 #nao vai mudar a fome
         
-        if action == 1: return self.move_up(postion)
+        if action == 1: return self.move(postion, -1, 0) #ir pra cima
 
-        if action == 2: return self.move_down(postion)
+        if action == 2: return self.move(postion, 1, 0) #ir pra baixo
 
-        if action == 3: return self.move_right(postion)
+        if action == 3: return self.move(postion, 0, 1) #ir pra direita
 
-        if action == 4: return self.move_left(postion)
-
-        if action == 5: return self.eat(postion)
-
-    def update_by_death(self, position):
-        if position in self.positions_with_grass:
-            self.mapa[position[0]][position[1]] = 2
-        else:
-            self.mapa[position[0]][position[1]] = 0
+        if action == 4: return self.move(postion, 0, -1) #ir pra esquerda
 
     def inputs(self, position):
         inputs_ = []
@@ -199,32 +146,40 @@ class Mapa:
         y = position[0]
         x = position[1]
 
-        flag = 0
-        for i in range(y, -1, -1):
-            if self.mapa[i][x] == 1:
-                flag = 1
-                break
-        inputs_.append(flag)
+        flag = 1
+        for i in range(y - 1, -1): #for(int i = y - 1; i >= 0; i--)
+            if (self.mapa[i][x] != 0) and (self.mapa[i][x] != -1):
+                flag = 0
+                inputs_.append(calcula_input(self.mapa[i][x], calcula_distancia((i, x), (y, x))))
 
-        flag = 0
-        for i in range(y, self.y):
-            if self.mapa[i][x] == 1:
-                flag = 1
                 break
-        inputs_.append(flag)
+        if flag: inputs_.append(0)
 
-        flag = 0
-        for i in range(x, -1, -1):
-            if self.mapa[y][i] == 1:
-                flag = 1 
-                break
-        inputs_.append(flag)
+        flag = 1
+        for i in range(y + 1, self.y):
+            if (self.mapa[i][x] != 0) and (self.mapa[i][x] != -1):
+                flag = 0
+                inputs_.append(calcula_input(self.mapa[i][x], calcula_distancia((i, x), (y, x))))
 
-        flag = 0
-        for i in range(x, self.x):
-            if self.mapa[y][i] == 1:
-                flag = 1 
                 break
-        inputs_.append(flag)
+        if flag: inputs_.append(0)
+
+        flag = 1
+        for i in range(x - 1, -1, -1):
+            if (self.mapa[y][i] != 0) and (self.mapa[y][i] != -1):
+                flag = 0
+                inputs_.append(calcula_input(self.mapa[y][i], calcula_distancia((y, i), (y, x))))
+
+                break
+        if flag: inputs_.append(0)
+
+        flag = 1
+        for i in range(x + 1, self.x):
+            if (self.mapa[y][i] != 0) and (self.mapa[y][i] != -1):
+                flag = 0
+                inputs_.append(calcula_input(self.mapa[y][i], calcula_distancia((y, i), (y, x))))
+                
+                break
+        if flag: inputs_.append(0)
 
         return inputs_
