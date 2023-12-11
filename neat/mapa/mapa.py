@@ -42,12 +42,15 @@ class Mapa:
                     self.mapa[i].append(-1)
 
             for _ in range(1, x-1):
-                self.mapa[i].append(random.choices([0, 1, 2], weights=[terra_chance, obstaculo_chance, grama_chance])[0])
+                valor_a_ser_adicionado = random.choices([0, 1, 2], weights=[terra_chance, obstaculo_chance, grama_chance])[0]
+                self.mapa[i].append(valor_a_ser_adicionado)
 
-                if self.mapa[i] == 2: #se for uma grama, adicionar a posição na lista de posições que tem grama
-                    self.positions_with_grass.append([y, x])
+                if valor_a_ser_adicionado == 2: #se for uma grama, adicionar a posição na lista de posições que tem grama
+                    self.positions_withgrass.append([y, x])
 
             self.mapa[i].append(-1)
+
+        self.positions_withgrass = set(self.positions_withgrass) #busca em set é O(1)
 
     def atualizar(self, individuos: list[Individuo]):
          #atualizar o mapa
@@ -122,10 +125,13 @@ class Mapa:
 
         self.mapa[posicao_atual[0] + anda_y][posicao_atual[1] + anda_x] = indv
 
-        if ( ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) in self.positions_withgrass  ): # se ele for para grama, come a grama e perde fome
+        if ( ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) in self.positions_withgrass): # se ele for para grama, come a grama e perde fome
+            print("kaugsdasd")
+
+            exit(1)
             self.positions_withgrass.remove(((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)))  #remove posicao da lista de gramas
 
-            return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) , -0.3
+            return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)), -0.3
  
         return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) , 0.0
     
@@ -183,3 +189,6 @@ class Mapa:
         if flag: inputs_.append(0)
 
         return inputs_
+    
+    def mudar_valor(self, posicao: tuple, valor: int):
+        self.mapa[posicao[0]][posicao[1]] = valor

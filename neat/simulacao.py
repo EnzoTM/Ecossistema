@@ -5,7 +5,15 @@ from mapa.mapa import Mapa
 import math
 import random
 
+contador = 0
+
 ag = AG()
+
+def GetFitness(individuos: list[Individuo]):
+    def criterio_de_ordenacao(individuo: Individuo):
+        return individuo.vida
+
+    return sorted(individuos, key=criterio_de_ordenacao)
 
 def melhor_individuo(individuo1: Individuo, individuo2: Individuo):
     if individuo1.vida > individuo2.vida:
@@ -62,6 +70,9 @@ class Simulacao():
         for i in range(0, len(populacao)): 
             if populacao[i].vida > melhor.vida:
                 melhor = populacao[i]
+
+        melhor.vida = 1
+        melhor.fome = 0
         
         nova_populacao.append(melhor) #colcoar o melhor de todos na proxima geração
 
@@ -93,33 +104,36 @@ class Simulacao():
 
     def Simulate(self):
         for _ in range(self.numero_de_acoes):
-            for individuo in self.individuos:
-                if (individuo.vida > 0):
-                    individuo.fome += 0.1 #aumentar a fome
+            for i in range(len(self.individuos)):
+                if (self.individuos[i].vida > 0):
+                    self.individuos[i].fome += 0.1 #aumentar a fome
 
-                    inputs = self.mapa.inputs(individuo.posicao) #pegar os inputs para esse individuo
+                    inputs = self.mapa.inputs(self.individuos[i].posicao) #pegar os inputs para esse individuo
 
-                    predicao = individuo.network.predict(inputs) #fazer a predicao
+                    predicao = self.individuos[i].network.predict(inputs) #fazer a predicao
 
                     #ver qual ação deve ser feita
                     acao = predicao.index(max(predicao))
 
                     #fazer a ação e pegar a nova posição do indivíduo após a ação
-                    nova_posicao, resultado = self.mapa.make_action(acao, individuo.posicao)
-                    individuo.posicao = nova_posicao   
+                    nova_posicao, resultado = self.mapa.make_action(acao, self.individuos[i].posicao)
+                    self.individuos[i].posicao = nova_posicao   
 
+                    if resultado < 0: contador += 1
 
-                    individuo.fome += resultado
+                    self.individuos[i].fome += resultado
 
-                    if individuo.fome > 1: individuo.fome = 1
-                    if individuo.fome < 0: individuo.fome = 0
+                    if self.individuos[i].fome > 1: self.individuos[i].fome = 1
+                    if self.individuos[i].fome < 0: self.individuos[i].fome = 0
 
                     #se o indivíduo está com fome
-                    if individuo.fome == 1:
-                        individuo.vida -= 0.1
+                    if self.individuos[i].fome == 1:
+                        self.individuos[i].vida -= 0.1
 
-                        if individuo.vida == 0: #se o individuo morreu
-                            self.mapa[individuo.posicao[0], individuo.posicao[1]] = 0 #deixar aquela posicao como disponível
+                        if self.individuos[i].vida <= 0: #se o individuo morreu
+                            self.mapa.mudar_valor(self.individuos[i].posicao, 0) #deixar aquela posicao como disponível
+
+                            self.individuos[i].vida = 0
             
 
     def StartSimulation(self, numero_de_geracoes: int, numero_de_individuos: int, numero_de_acoes: int, gene_individuo: list):
@@ -127,7 +141,7 @@ class Simulacao():
         self.numero_de_indivudos = numero_de_individuos
         self.numero_de_acoes = numero_de_acoes
 
-        self.mapa = Mapa(50, 50, obstaculo_chance=0, terra_chance=0.75, grama_chance=0.25)
+        self.mapa = Mapa(50, 50, obstaculo_chance=0, terra_chance=0.50, grama_chance=0.50)
 
         self.individuos = self.StartPopulation(numero_de_individuos=numero_de_individuos, gene=gene_individuo)
 
@@ -138,20 +152,13 @@ class Simulacao():
 
             self.mapa.atualizar(self.individuos) #atualizar o mapa
 
-            self.individuos = self.torneio_de_dois(self.individuos, self.individuos[0].tipo)
-    def Results(self):
-        for individuo in self.fitness:
-            print(f"{individuo.objetivo_concluido}, {individuo.numero_de_acoes}, {math.sqrt((individuo.posicao[0] - individuo.posicao_objetivo[0])**2 + (individuo.posicao[1] - individuo.posicao_objetivo[1])**2)}")
-"""
-será passado quatro inputs:
-se tem o objetivo em cima
-se tem o objetivo em baixo
-se tem o objetivo na esquerda
-se tem o objetivo na direita
+            if geracao != self.numero_de_geracoes - 1:
+                self.individuos = self.torneio_de_dois(self.individuos, self.individuos[0].tipo)
 
-os outputs vão ser:
-ir pra cima
-ir pra baixo
-ir pra esquerda
-ir pra direita
-"""
+    def Results(self):
+        ordenados: list[Individuo] = GetFitness(self.individuos)
+
+        for individuo in ordenados:
+            print(individuo.vida)
+
+        print("contador", contador)
