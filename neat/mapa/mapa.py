@@ -50,8 +50,11 @@ class Mapa:
 
             self.mapa[i].append(-1)
 
+    def __getitem__(self, position):
+        return self.mapa[position[0]][position[1]]
+
     def atualizar(self, individuos: list[Individuo]):
-         #atualizar o mapa
+         #atualizar o mapa         
         for individuo in individuos:
             posicao = individuo.posicao #na posicao de cada indivíduo
             
@@ -112,11 +115,10 @@ class Mapa:
                 return (y, x)
     
     def move(self, posicao_atual:tuple ,anda_y:int, anda_x:int):
-
         conteudo_novo_local = self.mapa[posicao_atual[0] + anda_y][posicao_atual[1] + anda_x]
 
         if  (conteudo_novo_local != 0) and (conteudo_novo_local != 2): #posicao atual somada a somas na posicao y e x é -1 (borda)
-            return posicao_atual , 0.1 #nao anda e ganha fome
+            return posicao_atual , 0.1 # nao anda e ganha fome
 
         #se chegou aqui singifca que a ação pode ser feita
 
@@ -125,11 +127,11 @@ class Mapa:
         self.mapa[posicao_atual[0]][posicao_atual[1]] = 0 #local atual fica disponivel
 
         self.mapa[posicao_atual[0] + anda_y][posicao_atual[1] + anda_x] = indv
-
+        
         if ( (posicao_atual[0] + anda_y , posicao_atual[1] + anda_x) in self.positions_withgrass): # se ele for para grama, come a grama e perde fome
             self.positions_withgrass.remove(((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)))  #remove posicao da lista de gramas
 
-            return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)), -0.3
+            return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)), -1
  
         return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) , 0.0
     
