@@ -15,3 +15,5 @@ class Individuo:
         self.gene = self.network.GetGene()
 
         self.tipo = tipo
+
+        self.quantidade = 0

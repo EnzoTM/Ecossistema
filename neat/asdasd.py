@@ -1,25 +1,23 @@
 from ag.ag import AG
 from individuos.individuo import CriarIndividuo, Individuo
 from mapa.mapa import Mapa
-
 import matplotlib.pyplot as plt
 
-fitness_melhor_individuo = []
-media_fitness_populacao = []
-quantidade_de_grama = []
+import math
+import random
 
 ag = AG()
 
-def Ordenar(individuos: list[Individuo]):
-    def criterio_de_ordenacao(individuo: Individuo):
-        return individuo.vida
+fitness_melhor_individuo = []
+media_fitness_populacao = []
 
-    return sorted(individuos, key=criterio_de_ordenacao)
+
 
 def melhor_individuo(individuo1: Individuo, individuo2: Individuo):
     if individuo1.vida > individuo2.vida:
         return individuo1
     return individuo2
+
 
 def cruzamento(individuo1: Individuo, individuo2: Individuo):
     gene_novo = individuo1.gene.copy()
@@ -35,17 +33,36 @@ def cruzamento(individuo1: Individuo, individuo2: Individuo):
 
     return gene_novo
 
+def comparar_estrutura():
+    #TODO
+    return
 
 
+def separar_em_especies(populacao):
+    lista_subespecies = []
+
+    for individuo in populacao:
+        flag = False  # Indica se encontrou uma subespécie correspondente
+
+        for subespecie in lista_subespecies:
+            if comparar_estrutura(subespecie[0].gene, individuo.gene):
+                subespecie.append(individuo)
+                flag = True
+                break
+
+        if not flag:
+            lista_subespecies.append([individuo])
+        
+    return lista_subespecies
 
 class Simulacao():
-    def __init__(self) -> None:
+    def _init_(self) -> None:
         pass
 
     def torneio_de_dois(self, populacao: list[Individuo], tipo: int)->list:
         media_dos_fitness: int = 0
         for i in populacao:
-            media_dos_fitness += i.vida
+            media_dos_fitness += i.fitness
         
         media_dos_fitness /= len(populacao)
             
@@ -59,20 +76,14 @@ class Simulacao():
         for i in range(0, len(populacao)): 
             if populacao[i].vida > melhor.vida:
                 melhor = populacao[i]
-
-        fitness_melhor_individuo.append(melhor.vida)
-
-        melhor.vida = 1
-        melhor.fome = 0
         
-        nova_populacao.append(melhor) #colcoar o melhor de todos na proxima geração
+        fitness_melhor_individuo.append(melhor.fitness)
+        
+        nova_populacao.append(melhor) #colocar o melhor de todos na proxima geração
 
-        for i in range(len(populacao) - 1):
-            #pai1 = melhor_individuo(populacao[random.randint(0, len(populacao) - 1)], populacao[random.randint(0, len(populacao) - 1)])
-            #pai2 = melhor_individuo(populacao[random.randint(0, len(populacao) - 1)], populacao[random.randint(0, len(populacao) - 1)])
-
-            pai1 = melhor
-            pai2 = populacao[i]
+        for _ in populacao:
+            pai1 = melhor_individuo(populacao[random.randint(0, len(populacao) - 1)], populacao[random.randint(0, len(populacao) - 1)])
+            pai2 = melhor_individuo(populacao[random.randint(0, len(populacao) - 1)], populacao[random.randint(0, len(populacao) - 1)])
 
             gene = cruzamento(pai1, pai2)
 
@@ -83,7 +94,7 @@ class Simulacao():
             filho = CriarIndividuo(gene=gene, posicao=posicao, tipo=tipo)
 
             nova_populacao.append(filho)
-
+        
         return nova_populacao
     
     def StartPopulation(self, numero_de_individuos: int, gene: list):
@@ -98,34 +109,32 @@ class Simulacao():
 
     def Simulate(self):
         for _ in range(self.numero_de_acoes):
-            for i in range(len(self.individuos)):
-                if (self.individuos[i].vida > 0):
-                    self.individuos[i].fome += 0.1 #aumentar a fome
+            for individuo in self.individuos:
+                if (individuo.vida > 0):
+                    individuo.fome += 0.1 #aumentar a fome
 
-                    inputs = self.mapa.inputs(self.individuos[i].posicao) #pegar os inputs para esse individuo
+                    inputs = self.mapa.inputs(individuo.posicao) #pegar os inputs para esse individuo
 
-                    predicao = self.individuos[i].network.predict(inputs) #fazer a predicao
+                    predicao = individuo.network.predict(inputs) #fazer a predicao
 
                     #ver qual ação deve ser feita
                     acao = predicao.index(max(predicao))
 
                     #fazer a ação e pegar a nova posição do indivíduo após a ação
-                    nova_posicao, resultado = self.mapa.make_action(acao, self.individuos[i].posicao)
-                    self.individuos[i].posicao = nova_posicao 
-                    
-                    self.individuos[i].fome += resultado
+                    nova_posicao, resultado = self.mapa.make_action(acao, individuo.posicao)
+                    individuo.posicao = nova_posicao   
 
-                    if self.individuos[i].fome > 1: self.individuos[i].fome = 1
-                    if self.individuos[i].fome < 0: self.individuos[i].fome = 0
+                    individuo.fome += resultado
+
+                    if individuo.fome > 1: individuo.fome = 1
+                    if individuo.fome < 0: individuo.fome = 0
 
                     #se o indivíduo está com fome
-                    if self.individuos[i].fome == 1:
-                        self.individuos[i].vida -= 0.1
+                    if individuo.fome == 1:
+                        individuo.vida -= 0.1
 
-                        if self.individuos[i].vida <= 0: #se o individuo morreu
-                            self.mapa.mudar_valor(self.individuos[i].posicao, 0) #deixar aquela posicao como disponível
-
-                            self.individuos[i].vida = 0
+                        if individuo.vida == 0: #se o individuo morreu
+                            self.mapa[individuo.posicao[0], individuo.posicao[1]] = 0 #deixar aquela posicao como disponível
             
 
     def StartSimulation(self, numero_de_geracoes: int, numero_de_individuos: int, numero_de_acoes: int, gene_individuo: list):
@@ -133,23 +142,25 @@ class Simulacao():
         self.numero_de_indivudos = numero_de_individuos
         self.numero_de_acoes = numero_de_acoes
 
-        self.mapa = Mapa(20, 20, obstaculo_chance=0, terra_chance=0.80, grama_chance=0.20)
+        self.mapa = Mapa(50, 50, obstaculo_chance=0, terra_chance=0.75, grama_chance=0.25)
 
         self.individuos = self.StartPopulation(numero_de_individuos=numero_de_individuos, gene=gene_individuo)
 
         for geracao in range(self.numero_de_geracoes):
-            quantidade_de_grama.append(len(self.mapa.positions_withgrass))
             print(f"Na geração {geracao}")
 
             self.Simulate()
 
             #self.mapa.atualizar(self.individuos) #atualizar o mapa
 
-            self.mapa = Mapa(20, 20, obstaculo_chance=0, terra_chance=0.80, grama_chance=0.20)
+            self.mapa = Mapa(50, 50, obstaculo_chance=0, terra_chance=0.75, grama_chance=0.25)
 
             self.individuos = self.torneio_de_dois(self.individuos, self.individuos[0].tipo)
-            
+
     def Results(self):
+        for individuo in self.fitness:
+            print(f"{individuo.objetivo_concluido}, {individuo.numero_de_acoes}, {math.sqrt((individuo.posicao[0] - individuo.posicao_objetivo[0])*2 + (individuo.posicao[1] - individuo.posicao_objetivo[1])*2)}")
+
         # Gerações (assumindo que cada elemento nas listas acima corresponde a uma geração)
         geracoes = list(range(1, len(fitness_melhor_individuo) + 1))
 
@@ -165,3 +176,17 @@ class Simulacao():
 
         # Mostrar o gráfico
         plt.show()
+
+"""
+será passado quatro inputs:
+se tem o objetivo em cima
+se tem o objetivo em baixo
+se tem o objetivo na esquerda
+se tem o objetivo na direita
+
+os outputs vão ser:
+ir pra cima
+ir pra baixo
+ir pra esquerda
+ir pra direita
+"""

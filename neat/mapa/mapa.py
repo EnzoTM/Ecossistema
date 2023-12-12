@@ -29,7 +29,7 @@ class Mapa:
     def __init__(self, x, y, obstaculo_chance = 0.25, terra_chance=0.5, grama_chance=0.25) -> None:
         self.mapa: list[list] = []
 
-        self.positions_withgrass:list = []
+        self.positions_withgrass:set = set()
 
         self.x: int  = x
         self.y: int = y
@@ -41,16 +41,14 @@ class Mapa:
                 for k in range(x):
                     self.mapa[i].append(-1)
 
-            for _ in range(1, x-1):
+            for j in range(1, x-1):
                 valor_a_ser_adicionado = random.choices([0, 1, 2], weights=[terra_chance, obstaculo_chance, grama_chance])[0]
                 self.mapa[i].append(valor_a_ser_adicionado)
 
                 if valor_a_ser_adicionado == 2: #se for uma grama, adicionar a posição na lista de posições que tem grama
-                    self.positions_withgrass.append([y, x])
+                    self.positions_withgrass.add((i, j))
 
             self.mapa[i].append(-1)
-
-        self.positions_withgrass = set(self.positions_withgrass) #busca em set é O(1)
 
     def atualizar(self, individuos: list[Individuo]):
          #atualizar o mapa
@@ -58,7 +56,10 @@ class Mapa:
             posicao = individuo.posicao #na posicao de cada indivíduo
             
             #ou colocar uma terra ou uma grama no local de onde estava o indivíduo
-            self.mapa[posicao[0]][posicao[1]] = random.choices([0, 2], weights=[0.75, 0.25])[0]
+            novo_valor = random.choices([0, 2], weights=[0.25, 0.75])[0]
+            self.mapa[posicao[0]][posicao[1]] = novo_valor
+
+            if novo_valor == 2: self.positions_withgrass.add((posicao[0], posicao[1]))
 
     def printar_mapa(self)->None:   
         for y in range(self.y):
@@ -125,10 +126,7 @@ class Mapa:
 
         self.mapa[posicao_atual[0] + anda_y][posicao_atual[1] + anda_x] = indv
 
-        if ( ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)) in self.positions_withgrass): # se ele for para grama, come a grama e perde fome
-            print("kaugsdasd")
-
-            exit(1)
+        if ( (posicao_atual[0] + anda_y , posicao_atual[1] + anda_x) in self.positions_withgrass): # se ele for para grama, come a grama e perde fome
             self.positions_withgrass.remove(((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)))  #remove posicao da lista de gramas
 
             return ((posicao_atual[0] + anda_y) , (posicao_atual[1] + anda_x)), -0.3
