@@ -1,5 +1,5 @@
 # Sistemas Evolutivos - USP
-## Simulação de um ecossistema
+## Projeto - Simulação de um ecossistema
 
 <p><strong>se der colocar um gif do ecossistema, uma print, não sei</strong></p>
 
