@@ -44,14 +44,16 @@ O método de cruzamento para gerar a nova população consiste em matar a metade
 
 <br>
 <h3>A simulação é feita da seguinte forma:</h3>
-  Após criar o mapa 50x50 com as gramas (40% do mapa) e inserir as 40 presas e 40 predadores, todos tem 50 ações para realizar. O fitness e definido pelo sucesso na obtenção de comida e sobrevivência, sendo que quanto maior o fitness, maior a chance de ser o melhor de todos e passar os genes para a próxima geração.
-- Fitness da presa: ela ganha 2 pontos por comer e perde 0,5 se não comer
-- Fitness do predador: ele ganha 10 pontos por comer e perde 0,5 se não comer
-Dessa forma, as presas e os predadores estão em constante evolução para conseguir aumentar seu fitness e aumentar a sobrevivência de sua população no ecossistema, como é possível observar no gráfico gerado abaixo.
-Além disso, ao fim de cada ação as gramas renascem no mapa e as presas mortas renascem em outra posição e têm sua pontuação zerada.
+  <p>Após criar o mapa 50x50 com as gramas (40% do mapa) e inserir as 40 presas e 40 predadores, todos tem 50 ações para realizar. O fitness e definido pelo sucesso na obtenção de comida e sobrevivência, sendo que quanto maior o fitness, maior a chance de ser o melhor de todos e passar os genes para a próxima geração.</p>
+<ul>
+  <li><strong>Fitness da presa:</strong> ela ganha 2 pontos por comer e perde 0,5 se não comer</li>
+  <li><strong>Fitness do predador:</strong> ele ganha 10 pontos por comer e perde 0,5 se não comer</li>
+</ul>
+<p>Dessa forma, as presas e os predadores estão em constante evolução para conseguir aumentar seu fitness e aumentar a sobrevivência de sua população no ecossistema, como é possível observar no gráfico gerado abaixo.
+Além disso, ao fim de cada ação as gramas renascem no mapa e as presas mortas renascem em outra posição e têm sua pontuação zerada.</p>
 
 <br>
-<br>
+
 <div align="center">
   <img src="https://github.com/EnzoTM/Ecossistema/blob/main/Simula%C3%A7%C3%A3o%20do%20Ecossistema/graficos/0.png?raw=true">
 </div>
