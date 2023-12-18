@@ -5,7 +5,6 @@
 
 <br>
 <p><strong>Documentação:</strong> https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing</p>
-
 <br>
 
 <b>Integrantes do grupo:</b>
@@ -16,16 +15,13 @@
   <li>Letícia Barbosa Neves: https://github.com/LeticiaBN</li>
   <li>Ayrton da Costa Ganem Filho: https://github.com/A1RT0N </li>
 </ul>
-
 <br>
 
 <b>Professor:</b>
-<br>
 <ul>
   <li>Simões: https://gitlab.com/simoesusp</li>
 </ul>
 
-<br>
 <br>
 
 <b>As bibliotecas utilizadas foram:</b>
@@ -33,7 +29,6 @@
   <li>Matplotlib: biblioteca usada para plotar o gráfico</li>
   <li>Pygame: usada para fazer a parte visual do ecossistema</li>
 </ul>
-
 
 <br>
 <h3>Sobre o projeto:</h3>
