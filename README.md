@@ -24,9 +24,10 @@
 
 <br>
 Documentação: https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing
-</br>
 
-As bibliotecas utilizadas foram:
+<br>
+
+<h2>As bibliotecas utilizadas foram:</h2>
 - Matplotlib: biblioteca usada para plotar o gráfico
 - Pygame: usada para fazer a parte visual do ecossistema
 
