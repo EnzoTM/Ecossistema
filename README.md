@@ -11,7 +11,7 @@
   <li>Enzo Tonon Morente: https://github.com/EnzoTM</li>
   <li>João Pedro Alves Notari Godoy: https://github.com/joaopgodoy</li>
   <li>Letícia Barbosa Neves: https://github.com/LeticiaBN</li>
-  <li>Ayrton ...: https://github.com/A1RT0N </li>
+  <li>Ayrton da Costa Ganem Filho: https://github.com/A1RT0N </li>
 </ul>
 
 <br>
