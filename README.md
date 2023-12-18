@@ -36,7 +36,7 @@
 
 
 <br>
-
+<h3>Sobre o projeto:</h3>
 O projeto é uma simulação de um ecossistema contendo predador, presa e grama. Nesse caso, o predador é carnívoro e a presa é herbívora, ou seja, o predador come apenas a presa e a presa come apenas a grama.
 
 <br>
@@ -46,7 +46,7 @@ O método de cruzamento para gerar a nova população consiste em matar a metade
 
 <br>
 
-<h2>A simulação é feita da seguinte forma:</h2>
+<h3>A simulação é feita da seguinte forma:</h3>
 
   Após criar o mapa 50x50 com as gramas (40% do mapa) e inserir as 40 presas e 40 predadores, todos tem 50 ações para realizar. O fitness e definido pelo sucesso na obtenção de comida e sobrevivência, sendo que quanto maior o fitness, maior a chance de ser o melhor de todos e passar os genes para a próxima geração.
 - Fitness da presa: ela ganha 2 pontos por comer e perde 0,5 se não comer
