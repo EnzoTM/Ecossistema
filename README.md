@@ -37,17 +37,13 @@
 
 <br>
 <h3>Sobre o projeto:</h3>
-O projeto é uma simulação de um ecossistema contendo predador, presa e grama. Nesse caso, o predador é carnívoro e a presa é herbívora, ou seja, o predador come apenas a presa e a presa come apenas a grama.
+<p></p>O projeto é uma simulação de um ecossistema contendo predador, presa e grama. Nesse caso, o predador é carnívoro e a presa é herbívora, ou seja, o predador come apenas a presa e a presa come apenas a grama. </p>
+
+<p>O método de mutação escolhido foi a mutação variada, em que um locus é aleatoriamente escolhido e alterado.<br>
+O método de cruzamento para gerar a nova população consiste em matar a metade da população com o menor fitness e utilizar a melhor metade para cruzar. Dessa forma, cada individuo da melhor metade irá cruzar com o melhor de todos, gerando um gene em que cada locus tem 80% de chance de ser o do melhor de todos e 20% de ser do outro individuo.</p>
 
 <br>
-
-O método de mutação escolhido foi a mutação variada, em que um locus é aleatoriamente escolhido e alterado.
-O método de cruzamento para gerar a nova população consiste em matar a metade da população com o menor fitness e utilizar a melhor metade para cruzar. Dessa forma, cada individuo da melhor metade irá cruzar com o melhor de todos, gerando um gene em que cada locus tem 80% de chance de ser o do melhor de todos e 20% de ser do outro individuo.
-
-<br>
-
 <h3>A simulação é feita da seguinte forma:</h3>
-
   Após criar o mapa 50x50 com as gramas (40% do mapa) e inserir as 40 presas e 40 predadores, todos tem 50 ações para realizar. O fitness e definido pelo sucesso na obtenção de comida e sobrevivência, sendo que quanto maior o fitness, maior a chance de ser o melhor de todos e passar os genes para a próxima geração.
 - Fitness da presa: ela ganha 2 pontos por comer e perde 0,5 se não comer
 - Fitness do predador: ele ganha 10 pontos por comer e perde 0,5 se não comer
@@ -55,7 +51,7 @@ Dessa forma, as presas e os predadores estão em constante evolução para conse
 Além disso, ao fim de cada ação as gramas renascem no mapa e as presas mortas renascem em outra posição e têm sua pontuação zerada.
 
 <br>
-
+<br>
 <div align="center">
   <img src="https://github.com/EnzoTM/Ecossistema/blob/main/Simula%C3%A7%C3%A3o%20do%20Ecossistema/graficos/0.png?raw=true">
 </div>
