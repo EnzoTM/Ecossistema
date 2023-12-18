@@ -1,2 +1,0 @@
-[{"input_size": 2, "output_size": 1, "weights": [[-0.5447605975906926, -0.6181877568894627]], "weights_shape": [1, 2], "bias": [[-0.6107063042736939]], "bias_shape": [1, 1], "activation_function": "Tanh"}, 
-{"input_size": 1, "output_size": 1, "weights": [[0.03965700143707314]], "weights_shape": [1, 1], "bias": [[-0.12754218119627161]], "bias_shape": [1, 1], "activation_function": "Tanh"}]
