@@ -4,6 +4,9 @@
 <p><strong>se der colocar um gif do ecossistema, uma print, não sei</strong></p>
 
 <br>
+<p><strong>Documentação:</strong> https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing</p>
+
+<br>
 
 <b>Integrantes do grupo:</b>
 <ul>
@@ -21,9 +24,6 @@
 <ul>
   <li>Simões: https://gitlab.com/simoesusp</li>
 </ul>
-
-<br>
-Documentação: https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing
 
 <br>
 <br>
