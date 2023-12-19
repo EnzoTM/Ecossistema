@@ -8,13 +8,13 @@
 <br>
 <p><strong>Requerimentos:</strong> 
 <li>
-  pygame 2.5.2
+  pygame 2.5.2  => Biblioteca usada para fazer a parte visual do ecossistema
 </li>
 <li>
-  matplotlib==3.8.2
+  matplotlib==3.8.2  => Biblioteca usada para plotar o gráfico
 </li>
 <li>
-  numpy==1.26.2
+  numpy==1.26.2  => Biblioteca usada para fazer as contas com matriz
 </li>
 
 </p>
@@ -37,11 +37,6 @@
 
 <br>
 
-<b>As bibliotecas utilizadas foram:</b>
-<ul>
-  <li>Matplotlib: biblioteca usada para plotar o gráfico</li>
-  <li>Pygame: usada para fazer a parte visual do ecossistema</li>
-</ul>
 
 <br>
 <h3>Sobre o projeto:</h3>
