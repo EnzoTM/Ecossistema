@@ -6,7 +6,7 @@
 <br>
 
 <br>
-<p><strong>Requirements:</strong> 
+<p><strong>Requerimentos:</strong> 
 <li>
   pygame 2.5.2
 </li>
