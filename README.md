@@ -7,9 +7,16 @@
 
 <br>
 <p><strong>Requirements:</strong> 
-pygame 2.5.2
-matplotlib==3.8.2
-numpy==1.26.2
+<li>
+  pygame 2.5.2
+</li>
+<li>
+  matplotlib==3.8.2
+</li>
+<li>
+  numpy==1.26.2
+</li>
+
 </p>
 <br>
 
