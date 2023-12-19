@@ -5,6 +5,14 @@
 <p><strong>Documentação:</strong> https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing</p>
 <br>
 
+<br>
+<p><strong>Requirements:</strong> 
+pygame 2.5.2
+matplotlib==3.8.2
+numpy==1.26.2
+</p>
+<br>
+
 <b>Integrantes do grupo:</b>
 <ul>
   <li>Caue Paiva Lira: https://github.com/caue-paiva</li>
