@@ -20,11 +20,11 @@ class Imagem():
     def imagem(self):
         pygame.init()
         # Configurações da tela
-        screen_width = 1000
-        screen_height = 800
+        screen_width = 900
+        screen_height = 700
         screen = pygame.display.set_mode((screen_width, screen_height))
         
-        pygame.display.set_caption('Geração: ', str(self.geracao))
+        pygame.display.set_caption(f'Geração: {self.geracao}')
         
         # Carregar imagens
         grama_image = pygame.image.load('img/floor.png')
