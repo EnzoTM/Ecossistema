@@ -2,6 +2,11 @@
 ## Projeto - Simulação de um ecossistema
 
 <br>
+<div align="center">
+    <img src="https://github.com/EnzoTM/Ecossistema/blob/main/print_ecossistema.png">
+</div>
+
+<br>
 <p><strong>Documentação:</strong> https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing</p>
 <br>
 
