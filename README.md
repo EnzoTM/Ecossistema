@@ -55,6 +55,12 @@ O método de cruzamento para gerar a nova população consiste em matar a metade
 
 <br>
 
+<div align="center">
+  <img src="https://github.com/EnzoTM/Ecossistema/blob/main/Simula%C3%A7%C3%A3o%20do%20Ecossistema/graficos/0.png?raw=true">
+</div>
+
+<br>
+
 <h3>Vídeos</h3>
 Explicação ecossistema: https://www.youtube.com/watch?v=ZxwAdgbncaU&ab_channel=EnzoMorente
 <br>
@@ -67,7 +73,3 @@ Visual ecossitema: https://www.youtube.com/watch?v=S0wD8kGTfjg&ab_channel=EnzoMo
 Rede Neural explicação: https://www.youtube.com/watch?v=QYNHVtSJmNc&ab_channel=EnzoMorente
 <br>
 Visual e simulação da rede neural:  https://www.youtube.com/watch?v=1jycULDnOD0&ab_channel=EnzoMorente
-
-<div align="center">
-  <img src="https://github.com/EnzoTM/Ecossistema/blob/main/Simula%C3%A7%C3%A3o%20do%20Ecossistema/graficos/0.png?raw=true">
-</div>
