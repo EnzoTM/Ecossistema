@@ -133,7 +133,7 @@ class Simulacao():
 
         #---------------------Cruzamento---------------------
         
-        #cruzar a melhor metade da população com o melhor da geraçãoW
+        #cruzar a melhor metade da população com o melhor da geração
         for i in range(5, int(len(populacao)/2)):
             media_populacao += populacao[i].quantidade #cálculo da média da população
 
@@ -214,7 +214,7 @@ class Simulacao():
 
         #---------------------Cruzamento---------------------
         
-        #cruzar a melhor metade da população com o melhor da geraçãoW
+        #cruzar a melhor metade da população com o melhor da geração
         for i in range(5, int(len(populacao)/2)):
             media_populacao += populacao[i].quantidade #cálculo da média da população
 

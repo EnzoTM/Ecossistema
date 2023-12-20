@@ -42,11 +42,19 @@ while(True):
         posicao = mapa.posicao_disponivel(4)
         predadores.append(CriarIndividuo(gene=gene_predador, mapeamento=mapeamento_predador, tipo=4, posicao=posicao))
 
+    
+    flag = 0
+    
     while(True):
+        if flag:
+            break
+
         for i in range(tamanho):
             comando = input()
 
-            if comando == '1': break #reinicia tudo
+            if comando == '1': 
+                flag = 1
+                break #reinicia tudo
 
             tmp = copy(mapa.presas_mortas) #cópia da lista de presas mortas
 
