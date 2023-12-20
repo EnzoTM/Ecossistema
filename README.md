@@ -37,9 +37,6 @@
 </ul>
 
 <br>
-
-
-<br>
 <h3>Sobre o projeto:</h3>
 <p></p>O projeto é uma simulação de um ecossistema contendo predador, presa e grama. Nesse caso, o predador é carnívoro e a presa é herbívora, ou seja, o predador come apenas a presa e a presa come apenas a grama. </p>
 <p>A tomada de decisões da presa e do predador é feita a partir de uma tabela verdade. A presa terá 3 inputs, sendo eles: se existe comida, aliado ou inimigo perto dela, sendo que ela irá se aproximar da comida e dos aliados e se afastar dos inimigos, podendo também andar aleatóriamente ou ficar parado. Já o predador vai receber apenas 2 inputs: se existe comida ou um aliado perto dele, e irá se aproximar da comida ou do aliado, além de poder andar aleatóriamente ou ficar parado. Assim, o trabalho do AG é descobrir qual ação cada individuo deve tomar com base nos inputs atuais para aumentar seu fitness e se tornar o melhor individuo. </p>
