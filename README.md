@@ -7,10 +7,6 @@
 </div>
 
 <br>
-<p><strong>Documentação:</strong> https://docs.google.com/document/d/1yNXUO-0nRKN0PhTbKsiD1S7UCiqhEQIHms1Df-uPZqw/edit?usp=sharing</p>
-<br>
-
-<br>
 <p><strong>Requerimentos:</strong> 
 <li>
   pygame 2.5.2  => Biblioteca usada para fazer a parte visual do ecossistema
