@@ -12,11 +12,9 @@ import time
 # 4: predador
 # 3: presa
 
-def atualizar_tela(self, screen, escala_x, escala_y):
-        for y in range(self.y):
-            for x in range(self.x):
-                posicao = (y, x)
-                tipo_terreno = self.mapa.__getitem__(position=posicao)
+                
+
+
 
 class Imagem():
     def __init__(self, x_mapa: int, y_mapa: int, mapa: Mapa, geracao: int):
@@ -54,7 +52,7 @@ class Imagem():
             for i in range(tamanho):
                 # comando = input()
 
-                # if comando == '1': break #reinicia tudo
+                # if comando == '1':  #reinicia tudo
 
                 tmp = copy(mapa.presas_mortas) #cópia da lista de presas mortas
 
@@ -108,9 +106,20 @@ class Imagem():
                             screen.blit(predador, (x * escala_x, y * escala_y))
                         elif tipo_terreno == 3:  # Presa
                             screen.blit(presa, (x * escala_x, y * escala_y))
-                #self.atualizar_tela(screen, escala_x, escala_y)
+                #self.atualizar_tela(screen, escala_x, escala_y)                        
 
                 pygame.display.flip()  # Atualiza a tela
+                
+            # Checando se acabou a grama
+            flag = 1
+            for x in range(self.x):
+                for y in range(self.y):
+                    ponto = (y,x)
+                    if(mapa.__getitem__(ponto) == 2):
+                        flag = 0
+                        break
+            if(flag == 1): 
+                break
 
 
 mapeamento_presa = {
